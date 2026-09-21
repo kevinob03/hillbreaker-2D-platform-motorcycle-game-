@@ -1,0 +1,2 @@
+import { Medal } from 'lucide-react'
+export default function LeaderboardRow({score,position}){return <div className={`leaderboard-row top-${position}`} role="row"><span className="rank" role="cell">{position<=3&&<Medal/>}<b>#{position}</b></span><b role="cell">{score.player}</b><span role="cell">{score.level}</span><span role="cell">{score.distance.toLocaleString('es-ES')} m</span><strong role="cell">{score.score.toLocaleString('es-ES')}</strong></div>}

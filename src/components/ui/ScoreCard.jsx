@@ -1,0 +1,1 @@
+export default function ScoreCard({icon:Icon,label,value,unit,accent=''}){return <article className={`score-card ${accent}`}><Icon/><div><small>{label}</small><strong>{value}</strong>{unit&&<span>{unit}</span>}</div></article>}

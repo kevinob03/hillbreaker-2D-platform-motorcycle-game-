@@ -1,0 +1,1 @@
+export default function ControlsHelp(){return <div className="controls-help"><span><kbd>W</kbd><kbd>↑</kbd>Acelerar</span><span><kbd>S</kbd><kbd>↓</kbd>Frenar</span><span><kbd>A</kbd><kbd>←</kbd>Atrás</span><span><kbd>D</kbd><kbd>→</kbd>Adelante</span></div>}

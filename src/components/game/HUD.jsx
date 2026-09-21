@@ -1,0 +1,2 @@
+import { Coins,Pause,Route } from 'lucide-react'; import FuelBar from './FuelBar'
+export default function HUD(){return <div className="hud"><FuelBar/><div className="hud-stat distance"><Route/><small>Distancia</small><b>0000 m</b></div><div className="hud-right"><div className="hud-stat"><Coins/><small>Monedas</small><b>00</b></div><div className="hud-stat"><small>Puntaje</small><b>00000</b></div><button aria-label="Pausa no disponible" disabled><Pause/></button></div><div className="speed"><b>00</b> km/h</div></div>}
