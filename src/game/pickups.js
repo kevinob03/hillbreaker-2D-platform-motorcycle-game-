@@ -1,13 +1,13 @@
-import { TERRAIN } from './constants'
-import { terrainYAt } from './createTerrain'
+﻿import { TERRAIN } from './constants'
+import { isTerrainGap,terrainYAt } from './createTerrain'
 const chunkRand=(seed,ci,salt)=>{let s=(seed^((ci+1)*(2654435761|0))^(salt*40503))>>>0;s=(s*1664525+1013904223)>>>0;return s/4294967296}
 export function spawnChunkPickups(run,terrain,ci){
   const points=terrain.points
-  const yAt=x=>terrainYAt(points,x)
+  const yAt=x=>terrainYAt(points,x,terrain)
   for(let a=0;a<2;a++){
     if(chunkRand(terrain.pickupSeed,ci,a+1)<.4){
-      const x=ci*TERRAIN.chunkLength+200+chunkRand(terrain.pickupSeed,ci,a+3)*800
-      run.pickups.push({x,y:yAt(x)-26,type:'fuel',collected:false,spin:chunkRand(terrain.pickupSeed,ci,a+5)*6.28})
+      let x=ci*TERRAIN.chunkLength+200+chunkRand(terrain.pickupSeed,ci,a+3)*800
+      if(isTerrainGap(terrain,x))x=ci*TERRAIN.chunkLength+150;run.pickups.push({x,y:yAt(x)-26,type:'fuel',collected:false,spin:chunkRand(terrain.pickupSeed,ci,a+5)*6.28})
     }
   }
   for(let c=0;c<2;c++){

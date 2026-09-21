@@ -1,4 +1,4 @@
-import { DEBUG_PHYSICS,THEMES,WORLD } from './constants'
+﻿import { DEBUG_PHYSICS,THEMES,WORLD } from './constants'
 const wrap=(v,len)=>{const r=v%len;return r<0?r+len:r}
 
 function mountainLayer(ctx,cameraX,color,baseY,height,parallax,step){
@@ -12,12 +12,14 @@ function drawSky(ctx,cameraX,theme){
   mountainLayer(ctx,cameraX,theme.far,420,155,.12,330);mountainLayer(ctx,cameraX,theme.mid,505,125,.28,260)
   ctx.fillStyle=`${theme.mid}aa`;for(let x=-(cameraX*.5)%180;x<WORLD.width+180;x+=180){ctx.beginPath();ctx.moveTo(x,525);ctx.lineTo(x+18,470);ctx.lineTo(x+36,525);ctx.fill()}
 }
-function drawTerrain(ctx,points,cameraX,theme){
-  ctx.save();ctx.translate(-cameraX,0);ctx.fillStyle=theme.soil;ctx.beginPath();ctx.moveTo(points[0].x,WORLD.height+100);points.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(points.at(-1).x,WORLD.height+100);ctx.closePath();ctx.fill()
-  ctx.strokeStyle=theme.edge;ctx.lineWidth=9;ctx.lineJoin='round';ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke()
-  ctx.fillStyle=theme.deep;ctx.globalAlpha=.42;for(let i=0;i<points.length;i++){const p=points[i];if(p.x<cameraX-60)continue;if(p.x>cameraX+WORLD.width+60)break;if(p.x%185<32){ctx.beginPath();ctx.ellipse(p.x,p.y+63+(p.x%4)*9,17+(p.x%3)*4,9,0,0,Math.PI*2);ctx.fill()}}ctx.globalAlpha=1;ctx.restore()
-}
-function drawCoin(ctx,coin,cameraX,time){
+function drawTerrain(ctx,points,cameraX,theme,gaps=[]){
+  const isGap=(a,b)=>gaps.some(g=>a.x>=g.from&&b.x<=g.to)
+  ctx.save();ctx.translate(-cameraX,0);ctx.fillStyle=theme.soil
+  let segment=[points[0]]
+  const paint=items=>{if(items.length<2)return;ctx.beginPath();ctx.moveTo(items[0].x,WORLD.height+100);items.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(items.at(-1).x,WORLD.height+100);ctx.closePath();ctx.fill();ctx.strokeStyle=theme.edge;ctx.lineWidth=9;ctx.lineJoin='round';ctx.beginPath();items.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke()}
+  for(let i=1;i<points.length;i+=1){if(isGap(points[i-1],points[i])){paint(segment);segment=[points[i]]}else segment.push(points[i])}paint(segment)
+  ctx.fillStyle=theme.deep;ctx.globalAlpha=.42;for(let i=0;i<points.length;i+=1){const p=points[i];if(p.x<cameraX-60)continue;if(p.x>cameraX+WORLD.width+60)break;if(p.x%185<32){ctx.beginPath();ctx.ellipse(p.x,p.y+63+(p.x%4)*9,17+(p.x%3)*4,9,0,0,Math.PI*2);ctx.fill()}}ctx.globalAlpha=1;ctx.restore()
+}function drawCoin(ctx,coin,cameraX,time){
   ctx.save();ctx.translate(coin.x-cameraX,coin.y);ctx.scale(Math.abs(Math.cos(time*.004+coin.spin))*.85+.15,1)
   ctx.fillStyle='#ffd34d';ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.fill()
   ctx.strokeStyle='#a16207';ctx.lineWidth=3;ctx.stroke()
@@ -107,7 +109,7 @@ export function renderGame(ctx,simulation,cameraX,themeName){
   const theme=THEMES[themeName]||THEMES.forest
   ctx.clearRect(0,0,WORLD.width,WORLD.height)
   drawSky(ctx,cameraX,theme)
-  drawTerrain(ctx,simulation.terrain.points,cameraX,theme)
+  drawTerrain(ctx,simulation.terrain.points,cameraX,theme,simulation.terrain.gaps)
   drawPickups(ctx,simulation.run,cameraX)
   drawParticles(ctx,simulation.run,cameraX)
   drawBike(ctx,simulation.bike,cameraX)

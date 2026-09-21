@@ -1,68 +1,16 @@
 import { Edge,Vec2 } from 'planck'
 import { TERRAIN,WORLD } from './constants'
-const u=v=>v/WORLD.scale
-const CL=TERRAIN.chunkLength
-const SAMPLE=TERRAIN.sample
-const PPC=CL/SAMPLE
-const TRAITS={forest:{base:505,amp:125,depth:10},canyon:{base:502,amp:180,depth:15},volcano:{base:500,amp:235,depth:19}}
-const chunkRand=(seed,ci,salt)=>{let s=(seed^((ci+1)*(2654435761|0))^(salt*40503))>>>0;s=(s*1664525+1013904223)>>>0;return s/4294967296}
-const ease=t=>.5-.5*Math.cos(t*Math.PI*2)
-function heightAt(t,ci,frac){
-  const tr=TRAITS[t.theme]||TRAITS.forest
-  const x=ci*CL+frac*CL
-  const diff=Math.min(1,ci/24)
-  const amp=tr.amp*(.3+.7*diff)
-  const flat=chunkRand(t.seed,ci,3)<.14
-  let h=tr.base
-  const bumpA=chunkRand(t.seed,ci,1)
-  const climb=chunkRand(t.seed,ci,2)
-  if(!flat)h-=amp*bumpA*Math.pow(ease(frac),.7)*(climb>.72?1.35:1)
-  const double=chunkRand(t.seed,ci,4)
-  if(double>.62&&!flat)h-=amp*.5*double*Math.pow(ease((frac-.5+1)%1),.95)
-  h+=Math.sin(x*.05+t.seed)*tr.depth*.4+Math.sin(x*.013*(t.seed%13+1))*tr.depth*.28
-  if(ci===0){
-    if(x<430)h=tr.base
-    else if(x<640)h=tr.base+(h-tr.base)*(x-430)/210
-  }
-  return Math.max(tr.base-300,Math.min(tr.base+50,h))
-}
-function materializeChunk(world,t,ci){
-  if(t.chunks.has(ci))return false
-  const pts=[]
-  for(let i=0;i<=PPC;i++)pts.push({x:ci*CL+i*SAMPLE,y:heightAt(t,ci,i/PPC)})
-  const shared=t.points.length>0&&t.points[t.points.length-1].x===pts[0].x
-  const start=shared?1:0
-  const firstIdx=t.points.length-start
-  const body=world.createBody()
-  for(let i=start;i<pts.length;i++)t.points.push(pts[i])
-  for(let k=firstIdx;k<t.points.length-1;k++){const a=t.points[k],b=t.points[k+1];body.createFixture(Edge(Vec2(u(a.x),u(a.y)),Vec2(u(b.x),u(b.y))),{friction:1.12,restitution:0})}
-  t.chunks.set(ci,true)
-  t.maxX=pts[pts.length-1].x
-  return true
-}
-function trimWorld(world,t,minKeepX){
-  const keep=minKeepX-TERRAIN.trimBehind
-  let ci=t.minChunk
-  while(ci>0&&t.chunks.has(ci)&&(ci+1)*CL<keep){
-    world.destroyBody(t.chunkBodies.get(ci))
-    t.chunkBodies.delete(ci)
-    t.chunks.delete(ci)
-    t.startIndex=(ci+1)*PPC
-    ci++
-  }
-  t.minChunk=ci
-  if(t.startIndex>0){t.points.splice(0,t.startIndex);t.startIndex=0}
-}
-export function advanceWorld(world,t,minX){
-  const created=[]
-  while(t.maxX<minX+TERRAIN.lookahead){materializeChunk(world,t,t.cursor);created.push(t.cursor);t.cursor++}
-  trimWorld(world,t,minX)
-  return created
-}
-export function createTerrain(world,theme,seed){
-  const t={theme,seed:seed>>>0,pickupSeed:(seed^0x9e3779b9)>>>0,chunks:new Map(),chunkBodies:new Map(),points:[],maxX:0,minChunk:0,startIndex:0,cursor:0}
-  materializeChunk(world,t,0)
-  t.cursor=1
-  return t
-}
-export function terrainYAt(p,x){if(x<=p[0].x)return p[0].y;const z=p.at(-1);if(x>=z.x)return z.y;const d=p[1].x-p[0].x,i=Math.min(p.length-2,Math.floor((x-p[0].x)/d)),a=p[i],b=p[i+1];return a.y+(b.y-a.y)*(x-a.x)/(b.x-a.x)}
+const u=v=>v/WORLD.scale,C=TERRAIN.chunkLength,S=TERRAIN.sample,N=C/S
+const base={forest:505,canyon:500,volcano:495}
+const rnd=(seed,i,k)=>{let n=(seed^Math.imul(i+1,2654435761)^Math.imul(k,40503))>>>0;n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296}
+const diff=(t,i)=>Math.min(1,i/(t==='forest'?32:t==='canyon'?24:18))
+function type(t,i,prev){const r=rnd(t.seed,i,1),d=diff(t.theme,i);if(['pit','double','big'].includes(prev))return r<.65?'recovery':r<.88?'hills':'waves';const w=t.theme==='forest'?[['recovery',24],['hills',26],['ramp',18],['waves',14],['dip',10],['pit',5+d*4],['technical',3]]:t.theme==='canyon'?[['recovery',14],['hills',20],['ramp',21],['waves',12],['dip',10],['pit',9+d*7],['big',6+d*5],['double',2+d*4],['technical',6]]:[['recovery',10],['hills',16],['ramp',18],['waves',13],['dip',9],['pit',11+d*8],['big',9+d*7],['double',5+d*6],['technical',9]];let n=r*w.reduce((a,x)=>a+x[1],0);for(const [x,v] of w){n-=v;if(n<=0)return x}return'hills'}
+function shape(k,z){const a=32*z,b=58*z,c=86*z,m={recovery:[0,-4,0,3,0,-3,0,2,0,0,0],hills:[0,-a,-a*1.6,-a*.8,0,-a*.5,-a*1.3,-a*.5,0,-a*.7,0],waves:[0,-a*.45,0,-a*.55,0,-a*.5,0,-a*.6,0,-a*.35,0],ramp:[0,-a*.15,-a*.45,-a*.8,-b,-b*.15,8,12,4,0,0],big:[0,-a*.12,-a*.45,-a*.95,-c,-c*.35,10,18,8,0,0],dip:[0,8,28,55,70,58,32,8,-8,-12,0],technical:[0,-a*.45,10,-a*.8,16,-a*.55,8,-a*.9,18,-a*.35,0],double:[0,-a*.1,-a*.5,-b,4,18,-a*.25,-b*.8,2,8,0],pit:[0,-a*.12,-a*.55,-b*.85,8,26,24,-b*.3,-a*.18,0,0]};return m[k]||m.hills}
+function make(t,i){const prev=t.info.get(i-1)?.type,k=type(t,i,prev),z=t.theme==='forest'?1:t.theme==='canyon'?1.28:1.55,y0=i?t.info.get(i-1).end:base[t.theme],q=shape(k,z),dr=(rnd(t.seed,i,2)-.5)*40*z,p=q.map((v,j)=>({x:i*C+j*S,y:Math.max(245,Math.min(620,y0+v+dr*j/N))})),g=[];if(k==='pit'||k==='double'){const wide=k==='double'||(t.theme!=='forest'&&rnd(t.seed,i,3)<.42+diff(t.theme,i)*.22),l=4,r=wide?7:6;g.push({from:p[l].x,to:p[r].x,size:(r-l)*S})}return{type:k,points:p,gaps:g,end:p.at(-1).y}}
+const gap=(t,x)=>t.gaps.some(g=>x>g.from&&x<g.to)
+function add(w,t,i){if(t.chunks.has(i))return false;const q=make(t,i),p=q.points,b=w.createBody();for(let j=0;j<p.length-1;j++){const a=p[j],z=p[j+1];if(q.gaps.some(g=>a.x>=g.from&&z.x<=g.to))continue;b.createFixture(Edge(Vec2(u(a.x),u(a.y)),Vec2(u(z.x),u(z.y))),{friction:1.12,restitution:0})}if(t.points.length&&t.points.at(-1).x===p[0].x)p.shift();t.points.push(...p);t.chunks.set(i,true);t.bodies.set(i,b);t.info.set(i,q);t.gaps.push(...q.gaps);t.maxX=q.points.at(-1).x;return true}
+function trim(w,t,x){const keep=x-TERRAIN.trimBehind;while(t.min>0&&t.chunks.has(t.min)&&(t.min+1)*C<keep){w.destroyBody(t.bodies.get(t.min));t.bodies.delete(t.min);t.chunks.delete(t.min);t.info.delete(t.min);t.min++}t.gaps=t.gaps.filter(g=>g.to>keep)}
+export function advanceWorld(w,t,x){const made=[];while(t.maxX<x+TERRAIN.lookahead){if(add(w,t,t.cursor))made.push(t.cursor);t.cursor++}trim(w,t,x);return made}
+export function createTerrain(w,theme,seed){const t={theme,seed:seed>>>0,chunks:new Map(),bodies:new Map(),info:new Map(),points:[],gaps:[],maxX:0,min:0,cursor:0};add(w,t,0);t.cursor=1;return t}
+export function terrainYAt(p,x,t){if(t&&gap(t,x))return 1e6;if(x<=p[0].x)return p[0].y;const z=p.at(-1);if(x>=z.x)return z.y;let i=0;while(i<p.length-1&&p[i+1].x<x)i++;const a=p[i],b=p[i+1];return a.y+(b.y-a.y)*(x-a.x)/(b.x-a.x)}
+export const isTerrainGap=gap

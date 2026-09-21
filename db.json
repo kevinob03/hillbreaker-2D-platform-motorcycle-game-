@@ -145,6 +145,56 @@
       "coins": 57,
       "date": "2026-09-21T19:45:13.811Z",
       "id": "nr-E7uQXV28"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 987,
+      "score": 2493,
+      "coins": 15,
+      "date": "2026-09-21T20:21:41.624Z",
+      "id": "J_NzWc9dCS8"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 42,
+      "score": 45,
+      "coins": 0,
+      "date": "2026-09-21T20:25:58.193Z",
+      "id": "4SqFYlf73Xs"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 2005,
+      "score": 6316,
+      "coins": 43,
+      "date": "2026-09-21T20:27:05.240Z",
+      "id": "PT18sS8t3_I"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 207,
+      "score": 309,
+      "coins": 1,
+      "date": "2026-09-21T20:31:38.625Z",
+      "id": "tt_hn49I4W4"
+    },
+    {
+      "player": "Player",
+      "levelId": "2",
+      "level": "Rocky Canyon",
+      "distance": 1021,
+      "score": 2160,
+      "coins": 11,
+      "date": "2026-09-21T20:33:29.437Z",
+      "id": "-52EqkN8EBY"
     }
   ],
   "config": {

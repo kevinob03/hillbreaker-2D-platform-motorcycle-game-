@@ -17,7 +17,7 @@ export function createPhysics(level,seedInput){
   const terrain=createTerrain(world,theme,seed)
   const run=createRun(level)
   for(const ci of advanceWorld(world,terrain,BIKE.startX))spawnChunkPickups(run,terrain,ci)
-  const spawnY=terrainYAt(terrain.points,BIKE.startX)-BIKE.wheelRadius-52
+  const spawnY=terrainYAt(terrain.points,BIKE.startX,terrain)-BIKE.wheelRadius-52
   const bike=createBike(world,spawnY)
   return {world,engine:world,terrain,bike,level,run,seed}
 }
@@ -30,8 +30,8 @@ export function restartPhysics(s){
 
 function applyBikeControls(s,k){
   const b=s.bike,pts=s.terrain.points
-  const rearGround=terrainYAt(pts,b.rear.position.x)-b.rear.position.y-b.rear.circleRadius<8
-  const frontGround=terrainYAt(pts,b.front.position.x)-b.front.position.y-b.front.circleRadius<8
+  const rearGround=terrainYAt(pts,b.rear.position.x,s.terrain)-b.rear.position.y-b.rear.circleRadius<8
+  const frontGround=terrainYAt(pts,b.front.position.x,s.terrain)-b.front.position.y-b.front.circleRadius<8
   const grounded=rearGround||frontGround
   const speed=Math.abs(b.chassis.velocity.x)
   let target=null,torque=0
@@ -131,3 +131,4 @@ export function stepPhysics(s,k,d){
   advanceRun(s,k,d)
 }
 export function getTelemetry(s){const b=s.bike,run=s.run;return {distance:Math.round(run.distance),speed:Math.max(0,Math.round(Math.abs(b.chassis.velocity.x)*.23)),fuel:Math.round(run.fuel),coins:run.coins,score:Math.round(run.score)}}
+
