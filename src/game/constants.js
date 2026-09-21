@@ -1,0 +1,8 @@
+export const WORLD={width:1280,height:720,gravity:22,step:1000/60,scale:30}
+export const BIKE={startX:230,startY:390,wheelRadius:34,wheelBase:126,chassisWidth:118,chassisHeight:24,wheelFriction:1.35,wheelRestitution:.02,chassisDensity:.85,wheelDensity:.7,chassisLinearDamping:.03,chassisAngularDamping:.08,wheelLinearDamping:.03,wheelAngularDamping:.015,suspensionFrequency:3.2,suspensionDamping:.30}
+export const CONTROL={motorSpeed:16.5,maxSpeed:560,motorTorque:320,torqueFalloff:.4,brakeTorque:340,revTorque:240,reverseSpeed:10,reverseThreshold:40,leanGain:2.4,stabilizeGain:.45,groundWheelRate:1.8,rearWheelRate:3.6,frontWheelRate:2.8,airWheelRate:5.5,wheelieImpulse:1.6,wheelieMinSpeed:50,maxChassisSpin:8}
+export const CAMERA={lead:360,smoothing:.06,maxBacktrack:30}
+export const RUN={fuelStart:100,fuelDanger:25,coinValue:100,fuelGain:30,coinRange:60,fuelRange:66,airBonusRate:6,airBonusCap:60,fuelBase:.9,fuelAccel:.95,fuelBrake:.5,wreckDanger:1.25}
+export const TERRAIN={sample:120,chunkLength:1200,lookahead:3600,trimBehind:3200,seed:77}
+export const DEBUG_PHYSICS=false
+export const THEMES={forest:{skyTop:'#f19b55',skyBottom:'#ffd795',sun:'#fff0a3',far:'#91a991',mid:'#557762',soil:'#53392d',deep:'#33251f',edge:'#a3e635',detail:'#6f533f'},canyon:{skyTop:'#c75836',skyBottom:'#efab71',sun:'#ffd37c',far:'#9f624b',mid:'#6f4135',soil:'#713d29',deep:'#40261f',edge:'#facc15',detail:'#95573b'},volcano:{skyTop:'#312537',skyBottom:'#8d3c38',sun:'#ff7a52',far:'#4d424c',mid:'#332d38',soil:'#403337',deep:'#211b21',edge:'#ff5500',detail:'#68433d'}}

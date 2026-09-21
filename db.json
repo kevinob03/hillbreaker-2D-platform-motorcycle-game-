@@ -1,1 +1,158 @@
-{"levels":[{"id":"1","name":"Green Hills","slug":"green-hills","difficulty":"Fácil","description":"Colinas abiertas y pendientes suaves para dominar los fundamentos.","bestDistance":1840,"bestScore":12600,"unlocked":true,"theme":"forest","fuelConsumption":1},{"id":"2","name":"Rocky Canyon","slug":"rocky-canyon","difficulty":"Media","description":"Saltos rocosos y desniveles técnicos bajo un sol abrasador.","bestDistance":1260,"bestScore":9800,"unlocked":true,"theme":"canyon","fuelConsumption":1.25},{"id":"3","name":"Death Mountain","slug":"death-mountain","difficulty":"Difícil","description":"Una ascensión hostil de roca volcánica reservada para expertos.","bestDistance":0,"bestScore":0,"unlocked":false,"theme":"volcano","fuelConsumption":1.6}],"scores":[{"id":"1","player":"K-Rider","levelId":"1","level":"Green Hills","distance":1840,"score":12600},{"id":"2","player":"Luna MX","levelId":"2","level":"Rocky Canyon","distance":1260,"score":11850},{"id":"3","player":"Nitro Leo","levelId":"1","level":"Green Hills","distance":1595,"score":10920},{"id":"4","player":"Roca 77","levelId":"2","level":"Rocky Canyon","distance":1080,"score":9450},{"id":"5","player":"Vale Rush","levelId":"1","level":"Green Hills","distance":1210,"score":8200},{"id":"6","player":"Dust Fox","levelId":"2","level":"Rocky Canyon","distance":890,"score":7100}],"config":{"gameName":"Hillbreaker","version":"0.1.0-phase-1","startingFuel":100,"coinValue":100,"phase":1}}
+{
+  "levels": [
+    {
+      "id": "1",
+      "name": "Green Hills",
+      "slug": "green-hills",
+      "difficulty": "Fácil",
+      "description": "Colinas abiertas y pendientes suaves para dominar los fundamentos.",
+      "bestDistance": 1840,
+      "bestScore": 12600,
+      "unlocked": true,
+      "theme": "forest",
+      "fuelConsumption": 1
+    },
+    {
+      "id": "2",
+      "name": "Rocky Canyon",
+      "slug": "rocky-canyon",
+      "difficulty": "Media",
+      "description": "Saltos rocosos y desniveles técnicos bajo un sol abrasador.",
+      "bestDistance": 1260,
+      "bestScore": 9800,
+      "unlocked": true,
+      "theme": "canyon",
+      "fuelConsumption": 1.25
+    },
+    {
+      "id": "3",
+      "name": "Death Mountain",
+      "slug": "death-mountain",
+      "difficulty": "Difícil",
+      "description": "Una ascensión hostil de roca volcánica reservada para expertos.",
+      "bestDistance": 0,
+      "bestScore": 0,
+      "unlocked": true,
+      "theme": "volcano",
+      "fuelConsumption": 1.6
+    }
+  ],
+  "scores": [
+    {
+      "id": "1",
+      "player": "K-Rider",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1840,
+      "score": 12600
+    },
+    {
+      "id": "2",
+      "player": "Luna MX",
+      "levelId": "2",
+      "level": "Rocky Canyon",
+      "distance": 1260,
+      "score": 11850
+    },
+    {
+      "id": "3",
+      "player": "Nitro Leo",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1595,
+      "score": 10920
+    },
+    {
+      "id": "4",
+      "player": "Roca 77",
+      "levelId": "2",
+      "level": "Rocky Canyon",
+      "distance": 1080,
+      "score": 9450
+    },
+    {
+      "id": "5",
+      "player": "Vale Rush",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1210,
+      "score": 8200
+    },
+    {
+      "id": "6",
+      "player": "Dust Fox",
+      "levelId": "2",
+      "level": "Rocky Canyon",
+      "distance": 890,
+      "score": 7100
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1977,
+      "score": 6177,
+      "coins": 42,
+      "date": "2026-09-21T18:57:32.197Z",
+      "id": "8x5aLNE_icE"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1607,
+      "score": 4515,
+      "coins": 29,
+      "date": "2026-09-21T19:22:15.382Z",
+      "id": "hniYFgwFtq8"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 1208,
+      "score": 3610,
+      "coins": 24,
+      "date": "2026-09-21T19:22:50.348Z",
+      "id": "WfqYP0u4_t0"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 105,
+      "score": 107,
+      "coins": 0,
+      "date": "2026-09-21T19:29:25.394Z",
+      "id": "wvos7_FS81M"
+    },
+    {
+      "player": "Player",
+      "levelId": "1",
+      "level": "Green Hills",
+      "distance": 125,
+      "score": 129,
+      "coins": 0,
+      "date": "2026-09-21T19:30:16.193Z",
+      "id": "LZmU6sN_1sg"
+    },
+    {
+      "player": "Player",
+      "levelId": "3",
+      "level": "Death Mountain",
+      "distance": 2748,
+      "score": 8464,
+      "coins": 57,
+      "date": "2026-09-21T19:45:13.811Z",
+      "id": "nr-E7uQXV28"
+    }
+  ],
+  "config": {
+    "gameName": "Hillbreaker",
+    "version": "0.3.0-phase-3",
+    "startingFuel": 100,
+    "coinValue": 100,
+    "phase": 3
+  },
+  "$schema": "./node_modules/json-server/schema.json"
+}

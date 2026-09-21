@@ -1,2 +1,13 @@
-import { useEffect,useState } from 'react'; import LevelCard from '../components/ui/LevelCard'; import { getLevels } from '../services/gameService'
-export default function LevelSelect(){const[levels,setLevels]=useState([]),[status,setStatus]=useState('loading'),[error,setError]=useState('');useEffect(()=>{let active=true;getLevels().then(d=>{if(active){setLevels(d);setStatus('success')}}).catch(e=>{if(active){setError(e.message);setStatus('error')}});return()=>{active=false}},[]);return <section className="standard-page"><div className="page-container"><header className="page-heading"><span className="eyebrow">Elige tu desafío</span><h1>Select your track</h1><p>Cada pista exige una estrategia distinta. Los récords esperan.</p></header>{status==='loading'&&<div className="status-panel"><i/>Cargando pistas...</div>}{status==='error'&&<div className="status-panel error"><b>No pudimos cargar las pistas.</b><span>{error} Comprueba que npm run server esté activo.</span></div>}{status==='success'&&levels.length===0&&<div className="status-panel">No hay pistas disponibles todavía.</div>}{status==='success'&&levels.length>0&&<div className="levels-grid">{levels.map((l,i)=><LevelCard key={l.id} level={l} index={i}/>)}</div>}</div></section>}
+import { useCallback,useEffect,useState } from 'react'; import LevelCard from '../components/ui/LevelCard'; import { getLevels } from '../services/gameService'
+export default function LevelSelect(){
+  const[levels,setLevels]=useState([]),[status,setStatus]=useState('loading'),[error,setError]=useState('')
+  const fetchData=useCallback(()=>{getLevels().then(d=>{setLevels(d);setStatus('success')}).catch(e=>{setError(e.message);setStatus('error')})},[])
+  useEffect(()=>{let active=true;getLevels().then(d=>{if(active){setLevels(d);setStatus('success')}}).catch(e=>{if(active){setError(e.message);setStatus('error')}});return()=>{active=false}},[])
+  const retry=()=>{setStatus('loading');setError('');fetchData()}
+  return <section className="standard-page"><div className="page-container"><header className="page-heading"><span className="eyebrow">Elige tu desafío</span><h1>Select your track</h1><p>Cada pista exige una estrategia distinta. Los récords esperan.</p></header>
+    {status==='loading'&&<div className="status-panel"><i/>Cargando pistas...</div>}
+    {status==='error'&&<div className="status-panel error"><b>No pudimos cargar las pistas.</b><span>{error} Comprueba que npm run server esté activo.</span><button className="arcade-button" onClick={retry}>Reintentar</button></div>}
+    {status==='success'&&levels.length===0&&<div className="status-panel">No hay pistas disponibles todavía.</div>}
+    {status==='success'&&levels.length>0&&<div className="levels-grid">{levels.map((l,i)=><LevelCard key={l.id} level={l} index={i}/>)}</div>}
+  </div></section>
+}

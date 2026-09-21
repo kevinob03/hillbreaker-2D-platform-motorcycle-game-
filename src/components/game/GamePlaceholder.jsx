@@ -1,2 +1,0 @@
-import ControlsHelp from './ControlsHelp'; import HUD from './HUD'
-export default function GamePlaceholder({theme}){return <div className={`game-placeholder ${theme}`}><HUD/><div className="sun"/><div className="mountain far"/><div className="mountain near"/><div className="moto" aria-label="Motocicleta temporal"><i/><i/><b/><span/></div><div className="terrain"/><ControlsHelp/><em className="phase-label">Gameplay disponible en la Fase 2</em></div>}

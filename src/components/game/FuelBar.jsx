@@ -1,1 +1,3 @@
-export default function FuelBar({value=72}){return <div className="fuel" aria-label={`Combustible: ${value}%`}><small>Combustible</small><div>{Array.from({length:8},(_,i)=><span className={i<Math.ceil(value/12.5)?'active':''} key={i}/>)}</div></div>}
+export default function FuelBar({value=100,critical=false}){
+  return <div className={`fuel${critical?' critical':''}`} aria-label={`Combustible: ${value}%`}><small>Combustible</small><div>{Array.from({length:10},(_,i)=><span className={i<Math.ceil(value/10)?'active':''} key={i}/>)}</div><em>{value}%</em></div>
+}
